@@ -42,7 +42,7 @@ def encontrar_tinta_desejada(lab_desejado):
     return tinta_selecionada
 
 # Endpoint para calcular a tinta ideal com base nos valores fornecidos
-@app.route('/calcular', methods=['POST'])
+@app.route('/calculate', methods=['POST'])
 def calcular():
     data = request.json
     lab_desejado = (data['L'], data['a'], data['b'], data['C'], data['h'])

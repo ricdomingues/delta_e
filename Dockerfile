@@ -1,27 +1,23 @@
-# Use a Python base image with required system dependencies
 FROM python:3.9-slim
 
-# Install system dependencies for numpy and pandas
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
-    gfortran \
-    libopenblas-dev \
-    liblapack-dev
+    libatlas-base-dev \
+    gfortran
 
-# Set the working directory inside the container
+# Set the working directory
 WORKDIR /app
 
-# Copy the requirements.txt file to install dependencies
+# Copy requirements.txt and install Python dependencies
 COPY requirements.txt .
-
-# Install Python dependencies
 RUN python3 -m venv venv && . venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
 
-# Copy the rest of the application code
+# Copy the application code
 COPY . .
 
-# Expose the port Flask runs on
+# Expose the port that Flask uses
 EXPOSE 8080
 
-# Run the application
+# Run the Flask app
 CMD ["python", "main.py"]

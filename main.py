@@ -1,49 +1,51 @@
 from flask import Flask, request, jsonify
 import math
+import pandas as pd
 
 app = Flask(__name__)
 
-# Hardcoded data as an example
-data = [
-    {'SAP': '100001', 'vL': 50.1, 'va': -2.3, 'vb': 1.5, 'vC': 48.2, 'vh': 230, 'local': '6*5*2'},
-    {'SAP': '100002', 'vL': 60.2, 'va': 1.0, 'vb': -0.5, 'vC': 60.0, 'vh': 200, 'local': '6*5*3'},
-    # Add all other rows here similarly
-]
+# Função para calcular a diferença de cor usando a fórmula Delta E
+def delta_e(lab1, lab2):
+    L1, a1, b1, C1, h1 = lab1
+    L2, a2, b2, C2, h2 = lab2
+    delta_L = L1 - L2
+    delta_a = a1 - a2
+    delta_b = b1 - b2
+    delta_C = C1 - C2
+    delta_h = h1 - h2
+    return (delta_L ** 2 + delta_a ** 2 + delta_b ** 2 + delta_C ** 2 + delta_h ** 2) ** 0.5
 
-# Function to calculate Delta E
-def calculate_delta_e(inputL, inputA, inputB, inputC, inputH, row):
-    deltaL = inputL - row['vL']
-    deltaA = inputA - row['va']
-    deltaB = inputB - row['vb']
-    deltaC = math.sqrt(inputC**2 + inputH**2) - math.sqrt(row['vC']**2 + row['vh']**2)
-    deltaH = math.sqrt(abs(deltaA**2 + deltaB**2 - deltaC**2))
-    return math.sqrt(deltaL**2 + deltaC**2 + deltaH**2)
+# Função para encontrar a tinta mais próxima
+def encontrar_tinta_desejada(lab_desejado, dados_tintas):
+    menor_diferenca = float('inf')
+    tinta_selecionada = None
+    for _, row in dados_tintas.iterrows():
+        lab_tinta = (float(row['L']), float(row['a']), float(row['b']), float(row['C']), float(row['h']))
+        diferenca = delta_e(lab_desejado, lab_tinta)
+        if diferenca < menor_diferenca:
+            menor_diferenca = diferenca
+            tinta_selecionada = row
+    return tinta_selecionada
 
-@app.route('/calculate', methods=['POST'])
-def calculate():
-    data_input = request.json
-    inputL = data_input.get('inputL')
-    inputA = data_input.get('inputA')
-    inputB = data_input.get('inputB')
-    inputC = data_input.get('inputC')
-    inputH = data_input.get('inputH')
+# Endpoint para cálculo
+@app.route('/calcular', methods=['POST'])
+def calcular():
+    data = request.json
+    lab_desejado = (data['L'], data['a'], data['b'], data['C'], data['h'])
+    dados_tintas = pd.read_excel('dados_tintas.xlsx')  # substitua com o caminho correto
+    tinta_selecionada = encontrar_tinta_desejada(lab_desejado, dados_tintas)
 
-    best_delta_e = float('inf')
-    best_sap = None
-    best_local = None
+    if tinta_selecionada is not None:
+        resposta = {
+            'SAP': tinta_selecionada['SAP'],
+            'descricao': tinta_selecionada['DESCRICAO'],
+            'cor': tinta_selecionada['COR'],
+            'tipo_verni': tinta_selecionada['TIPO DE VERNIZ']
+        }
+    else:
+        resposta = {'erro': 'Nenhuma tinta encontrada'}
 
-    for row in data:
-        delta_e = calculate_delta_e(inputL, inputA, inputB, inputC, inputH, row)
-        if delta_e < best_delta_e:
-            best_delta_e = delta_e
-            best_sap = row['SAP']
-            best_local = row['local']
-    
-    return jsonify({
-        'best_sap': best_sap,
-        'best_local': best_local,
-        'best_delta_e': best_delta_e
-    })
+    return jsonify(resposta)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(debug=True)

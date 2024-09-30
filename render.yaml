@@ -1,8 +1,0 @@
-services:
-  - type: web
-    name: colors_api_call
-    env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "python main.py"
-    plan: free
-    region: oregon  # Or another region supported by Render

@@ -48,6 +48,9 @@ def encontrar_tinta_desejada(lab_desejado):
 @app.route('/calculate', methods=['POST'])
 def calcular():
     data = request.json
+    # Process the data here
+    return jsonify({"status": "success", "data_received": data})
+    
     lab_desejado = (data['L'], data['a'], data['b'], data['C'], data['h'])
     
     tinta_selecionada = encontrar_tinta_desejada(lab_desejado)

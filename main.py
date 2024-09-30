@@ -3,6 +3,9 @@ import math
 
 app = Flask(__name__)
 
+@app.route('/')
+def index():
+    return "Welcome to the Flask Color Check API!"
 # Dados diretamente no código, convertidos do CSV
 dados_tintas = [
     {'VERNIZ': 'Brilho', 'SAP': 1079425.0, 'vL': 63.96, 'va': 17.94, 'vb': 44.7, 'vC': 48.16, 'vh': 68.13, 'local': '1*1*1'},

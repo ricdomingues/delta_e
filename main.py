@@ -81,30 +81,21 @@ def encontrar_tinta_desejada(lab_desejado):
 @app.route('/calculate', methods=['POST'])
 def calcular():
     data = request.json
-    l = data['L']
-    c = data['C']
-    h = data['h']
-
-    # Convertendo LABCH para RGB e hexadecimal
-    rgb = labch_to_rgb(l, c, h)
-    hex_color = rgb_para_hex(*rgb)
-    
     lab_desejado = (data['L'], data['a'], data['b'], data['C'], data['h'])
     
     tinta_selecionada = encontrar_tinta_desejada(lab_desejado)
 
     if tinta_selecionada:
+        # Converter valores numpy para tipos nativos do Python (int ou float)
         resposta = {
-            'SAP': tinta_selecionada['SAP'],
+            'SAP': int(tinta_selecionada['SAP']),
             'local': tinta_selecionada['local'],
             'verniz': tinta_selecionada['VERNIZ'],
-            'L': tinta_selecionada['vL'],
-            'a': tinta_selecionada['va'],
-            'b': tinta_selecionada['vb'],
-            'C': tinta_selecionada['vC'],
-            'h': tinta_selecionada['vh'],
-            'RGB': list(rgb),  # Retorna RGB
-            'Hexadecimal': hex_color  # Retorna cor em formato hexadecimal
+            'L': float(tinta_selecionada['vL']),
+            'a': float(tinta_selecionada['va']),
+            'b': float(tinta_selecionada['vb']),
+            'C': float(tinta_selecionada['vC']),
+            'h': float(tinta_selecionada['vh'])
         }
     else:
         resposta = {'erro': 'Nenhuma tinta encontrada'}

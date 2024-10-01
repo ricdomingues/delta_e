@@ -97,6 +97,21 @@ def calcular():
             'C': float(tinta_selecionada['vC']),
             'h': float(tinta_selecionada['vh'])
         }
+
+        # Agora converter a cor LABCH para RGB
+        l = float(tinta_selecionada['vL'])
+        c = float(tinta_selecionada['vC'])
+        h = float(tinta_selecionada['vh'])
+
+        # Utilizando a função que converte LABCH para RGB
+        rgb = labch_to_rgb(l, c, h)
+
+        # Converter o valor RGB para hexadecimal
+        hex_color = rgb_para_hex(*rgb)
+
+        # Adicionar a cor hexadecimal à resposta
+        resposta['cor_hex'] = hex_color
+
     else:
         resposta = {'erro': 'Nenhuma tinta encontrada'}
 

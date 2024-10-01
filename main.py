@@ -33,6 +33,7 @@ def encontrar_tinta_desejada(lab_desejado):
     tinta_selecionada = None
 
     for tinta in dados_tintas:
+        # Ignorar tintas com valores nulos
         if None in (tinta['vL'], tinta['va'], tinta['vb'], tinta['vC'], tinta['vh']):
             continue
         lab_tinta = (tinta['vL'], tinta['va'], tinta['vb'], tinta['vC'], tinta['vh'])
@@ -47,18 +48,7 @@ def encontrar_tinta_desejada(lab_desejado):
 @app.route('/calculate', methods=['POST'])
 def calcular():
     data = request.json
-    
-    try:
-        # Ensure the inputs are converted to floats
-        lab_desejado = (
-            float(data['L']),
-            float(data['a']),
-            float(data['b']),
-            float(data['C']),
-            float(data['h'])
-        )
-    except ValueError:
-        return jsonify({'error': 'Invalid input, ensure all values are numeric'}), 400
+    lab_desejado = (data['L'], data['a'], data['b'], data['C'], data['h'])
     
     tinta_selecionada = encontrar_tinta_desejada(lab_desejado)
 
@@ -66,7 +56,12 @@ def calcular():
         resposta = {
             'SAP': tinta_selecionada['SAP'],
             'local': tinta_selecionada['local'],
-            'verniz': tinta_selecionada['VERNIZ']
+            'verniz': tinta_selecionada['VERNIZ'],
+            'L': tinta_selecionada['vL'],
+            'a': tinta_selecionada['va'],
+            'b': tinta_selecionada['vb'],
+            'C': tinta_selecionada['vC'],
+            'h': tinta_selecionada['vh']
         }
     else:
         resposta = {'erro': 'Nenhuma tinta encontrada'}

@@ -47,12 +47,24 @@ def encontrar_tinta_desejada(lab_desejado):
 @app.route('/calculate', methods=['POST'])
 def calcular():
     data = request.json
-    lab_desejado = (data['L'], data['a'], data['b'], data['C'], data['h'])
+    
+    try:
+        # Ensure the inputs are converted to floats
+        lab_desejado = (
+            float(data['L']),
+            float(data['a']),
+            float(data['b']),
+            float(data['C']),
+            float(data['h'])
+        )
+    except ValueError:
+        return jsonify({'error': 'Invalid input, ensure all values are numeric'}), 400
+    
     tinta_selecionada = encontrar_tinta_desejada(lab_desejado)
 
     if tinta_selecionada:
         resposta = {
-            'bestmatchsap': tinta_selecionada['SAP'],  # Ensuring this value is returned
+            'SAP': tinta_selecionada['SAP'],
             'local': tinta_selecionada['local'],
             'verniz': tinta_selecionada['VERNIZ']
         }

@@ -1,7 +1,5 @@
 from flask import Flask, request, jsonify
 import math
-import logging
-logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 
@@ -35,7 +33,6 @@ def encontrar_tinta_desejada(lab_desejado):
     tinta_selecionada = None
 
     for tinta in dados_tintas:
-        # Ignorar tintas com valores nulos
         if None in (tinta['vL'], tinta['va'], tinta['vb'], tinta['vC'], tinta['vh']):
             continue
         lab_tinta = (tinta['vL'], tinta['va'], tinta['vb'], tinta['vC'], tinta['vh'])
@@ -50,15 +47,12 @@ def encontrar_tinta_desejada(lab_desejado):
 @app.route('/calculate', methods=['POST'])
 def calcular():
     data = request.json
-    app.logger.debug(f"Received data: {data}")
-    return jsonify({"status": "success", "data_received": data})
     lab_desejado = (data['L'], data['a'], data['b'], data['C'], data['h'])
-    
     tinta_selecionada = encontrar_tinta_desejada(lab_desejado)
 
     if tinta_selecionada:
         resposta = {
-            'SAP': tinta_selecionada['SAP'],
+            'bestmatchsap': tinta_selecionada['SAP'],  # Ensuring this value is returned
             'local': tinta_selecionada['local'],
             'verniz': tinta_selecionada['VERNIZ']
         }

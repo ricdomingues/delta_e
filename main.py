@@ -6,6 +6,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return "Welcome to the Flask Color Check API!"
+
 # Dados diretamente no código, convertidos do CSV
 dados_tintas = [
     {'VERNIZ': 'Brilho', 'SAP': 1079425.0, 'vL': 63.96, 'va': 17.94, 'vb': 44.7, 'vC': 48.16, 'vh': 68.13, 'local': '1*1*1'},
@@ -13,7 +14,6 @@ dados_tintas = [
     {'VERNIZ': 'Brilho', 'SAP': None, 'vL': None, 'va': None, 'vb': None, 'vC': None, 'vh': None, 'local': '1*1*3'},
     {'VERNIZ': 'Brilho', 'SAP': 1186108.0, 'vL': 83.56, 'va': 2.44, 'vb': 25.11, 'vC': 25.23, 'vh': 84.44, 'local': '1*1*4'},
     {'VERNIZ': 'Brilho', 'SAP': 1220256.0, 'vL': 64.09, 'va': 6.26, 'vb': 37.34, 'vC': 37.86, 'vh': 80.49, 'local': '1*2*1'}
-    # Adicione mais registros conforme necessário
 ]
 
 # Função para calcular a diferença de cor usando a fórmula Delta E
@@ -48,9 +48,6 @@ def encontrar_tinta_desejada(lab_desejado):
 @app.route('/calculate', methods=['POST'])
 def calcular():
     data = request.json
-    # Process the data here
-    return jsonify({"status": "success", "data_received": data})
-    
     lab_desejado = (data['L'], data['a'], data['b'], data['C'], data['h'])
     
     tinta_selecionada = encontrar_tinta_desejada(lab_desejado)
@@ -68,5 +65,3 @@ def calcular():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
-
-

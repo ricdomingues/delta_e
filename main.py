@@ -44,7 +44,7 @@ def labch_to_rgb(l, c, h):
     return rgb
 
 def rgb_para_hex(r, g, b):
-    return "0xFF{:02X}{:02X}{:02X}".format(r, g, b)
+    return "#{:02X}{:02X}{:02X}".format(r, g, b)
 
 # Função para calcular Delta E entre dois valores LABCH
 def delta_e(lab1, lab2):

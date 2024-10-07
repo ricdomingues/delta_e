@@ -12,11 +12,11 @@ def calcular_delta_total(lab1, lab2):
     L2, a2, b2, C2, h2 = lab2
     
     # Calcular a diferença absoluta para cada componente
-    diff_L = abs(L1 - L2)
-    diff_a = abs(a1 - a2)
-    diff_b = abs(b1 - b2)
-    diff_C = abs(C1 - C2)
-    diff_h = abs(h1 - h2)
+    diff_L = (L1 - L2)
+    diff_a = (a1 - a2)
+    diff_b = (b1 - b2)
+    diff_C = (C1 - C2)
+    diff_h = (h1 - h2)
     
     # Somar todas as diferenças absolutas
     diferenca_total = diff_L + diff_a + diff_b + diff_C + diff_h
@@ -45,7 +45,7 @@ def encontrar_tinta_desejada(lab_desejado):
             if valor_tinta is None:
                 continue
             
-            diferenca = abs(valor_desejado - valor_tinta)
+            diferenca = (valor_desejado - valor_tinta)
             
             if diferenca < menor_diferenca:
                 menor_diferenca = diferenca

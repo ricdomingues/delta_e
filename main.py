@@ -19,10 +19,8 @@ def delta_e(lab1, lab2):
     delta_C = float(C1) - float(C2)
     delta_h = float(h1) - float(h2)
     
-    # Retornar a diferença total calculada
-    delta_e = (delta_L ** 2 + delta_a ** 2 + delta_b ** 2 + delta_C ** 2 + delta_h ** 2)
-
-    return delta_e
+    # Retornar a raiz quadrada da soma dos quadrados das diferenças
+    return math.sqrt(delta_L ** 2 + delta_a ** 2 + delta_b ** 2 + delta_C ** 2 + delta_h ** 2)
 
 # Função para encontrar a tinta mais próxima com base nos valores de L*a*b*C*h
 def encontrar_tinta_desejada(lab_desejado):

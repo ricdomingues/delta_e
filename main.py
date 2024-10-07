@@ -39,12 +39,21 @@ def encontrar_tinta_desejada(lab_desejado):
         # Iterar sobre as tintas candidatas
         for tinta in candidatas:
             valor_desejado = lab_desejado[i]
-            valor_tinta = tinta[componente]
+            valor_tinta = tinta.get(componente)
+            
+            # Ignorar se o valor da tinta for None
+            if valor_tinta is None:
+                continue
+            
             diferenca = abs(valor_desejado - valor_tinta)
             
             if diferenca < menor_diferenca:
                 menor_diferenca = diferenca
                 tinta_selecionada = tinta
+        
+        # Verificar se encontramos uma tinta selecionada, senão retornar None
+        if tinta_selecionada is None:
+            return None, None
         
         # Atualizar as candidatas para a próxima iteração com base na seleção atual
         candidatas = [tinta_selecionada]

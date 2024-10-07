@@ -18,24 +18,26 @@ def calcular_diferenca_absoluta(lab1, lab2):
     diff_C = abs(C1 - C2)
     diff_h = abs(h1 - h2)
     
-    # Somar todas as diferenças absolutas
-    diferenca_total = diff_L + diff_a + diff_b + diff_C + diff_h
-
-    return diferenca_total
+    # Retornar a soma das diferenças e as diferenças individuais para desempate
+    return (diff_L + diff_a + diff_b + diff_C + diff_h, (diff_L, diff_a, diff_b, diff_C, diff_h))
 
 # Função para encontrar a tinta mais próxima com base na diferença absoluta
 def encontrar_tinta_desejada(lab_desejado):
     menor_diferenca = float('inf')
     tinta_selecionada = None
+    menores_diferencas = None
 
     for tinta in dados_tintas:
         # Ignorar tintas com valores nulos
         if None in (tinta['vL'], tinta['va'], tinta['vb'], tinta['vC'], tinta['vh']):
             continue
         lab_tinta = (tinta['vL'], tinta['va'], tinta['vb'], tinta['vC'], tinta['vh'])
-        diferenca = calcular_diferenca_absoluta(lab_desejado, lab_tinta)
-        if diferenca < menor_diferenca:
-            menor_diferenca = diferenca
+        diferenca_total, diferencas_individuais = calcular_diferenca_absoluta(lab_desejado, lab_tinta)
+        
+        # Verifica se encontramos uma diferença menor ou um desempate favorável
+        if diferenca_total < menor_diferenca or (diferenca_total == menor_diferenca and diferencas_individuais < menores_diferencas):
+            menor_diferenca = diferenca_total
+            menores_diferencas = diferencas_individuais
             tinta_selecionada = tinta
 
     return tinta_selecionada

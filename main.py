@@ -28,6 +28,10 @@ def encontrar_tinta_desejada(labch_desejado):
     tinta_selecionada = None
 
     for tinta in dados_tintas:
+        # Filtrar tintas que tenham valores None
+        if any(tinta.get(key) is None for key in ['vL', 'va', 'vb', 'vC', 'vh']):
+            continue
+        
         # Extrair todos os valores de L*, a*, b*, C*, e h* da tinta
         labch_tinta = (tinta['vL'], tinta['va'], tinta['vb'], tinta['vC'], tinta['vh'])
         diferenca = delta_e_advanced(labch_desejado, labch_tinta)

@@ -3,4 +3,4 @@ Werkzeug==2.3.7
 gunicorn==20.1.0
 colorspacious==1.1.0
 numpy==1.25.0
-
+flask-cors==3.0.10

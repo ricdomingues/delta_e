@@ -62,9 +62,9 @@ def calcular():
     # Retorna a tinta encontrada ou mensagem de erro se nenhuma for encontrada
     if tinta_selecionada:
         resposta = {
-            'SAP': tinta_selecionada['SAP'],
-            'local': tinta_selecionada['local'],
-            'verniz': tinta_selecionada['TIPODEVERNIZ'],
+            'SAP': tinta_selecionada.get('SAP', 'Desconhecido'),
+            'local': tinta_selecionada.get('local', 'Desconhecido'),
+            'VERNIZ': tinta_selecionada.get('VERNIZ', 'Desconhecido'),
             'L': tinta_selecionada['vL'],
             'a': tinta_selecionada['va'],
             'b': tinta_selecionada['vb'],

@@ -24,7 +24,7 @@ def delta_e(lab1, lab2):
     return delta_e
 
 # Função para encontrar a tinta mais próxima com base no Delta E e filtrando pelo valor de h*
-def encontrar_tinta_desejada(lab_desejado, tolerancia_h=30):
+def encontrar_tinta_desejada(lab_desejado, tolerancia_h=15):
     menor_diferenca = float('inf')
     tinta_selecionada = None
 

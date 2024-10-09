@@ -72,7 +72,6 @@ def calcular():
         resposta = {
             'SAP': tinta_selecionada.get('SAP', 'Desconhecido'),
             'local': tinta_selecionada.get('local', 'Desconhecido'),
-            'VERNIZ': tinta_selecionada.get('VERNIZ', 'Desconhecido'),
             'L': tinta_selecionada['vL'],
             'a': tinta_selecionada['va'],
             'b': tinta_selecionada['vb'],
